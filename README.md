@@ -1,93 +1,101 @@
-# HackR
 
+# 🛠️ HackR - API de Hacking
 
+Bienvenue dans le projet **HackR**, une API qui met à disposition des outils de hacking pour l'éducation et la démonstration de tests de sécurité. Ce projet est développé avec TypeScript et Express, et inclut plusieurs fonctionnalités de hacking ainsi que des mesures de sécurité intégrées.
 
-## Getting started
+## 📑 Sommaire
+- [Fonctionnalités](#fonctionnalités)
+- [Technologies Utilisées](#technologies-utilisées)
+- [Pré-requis](#pré-requis)
+- [Installation](#installation)
+- [Scripts Disponibles](#scripts-disponibles)
+- [Structure du Projet](#structure-du-projet)
+- [Swagger Documentation](#swagger-documentation)
+- [Utilisation](#utilisation)
+- [Contribution](#contribution)
+- [Licence](#licence)
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## 🎯 Fonctionnalités
+L'API HackR offre les fonctionnalités suivantes :
+- 🔍 **Vérification d'existence d'une adresse mail**
+- ✉️ **Spammer de mail** (contenu + nombre d'envoi)
+- 🎣 **Service de phishing** (création d'une page web sur mesure avec IA)
+- 🔒 **Vérification de la sécurité de mots de passe** (comparaison avec les mots de passe les plus courants)
+- 🌐 **Récupération de domaines et sous-domaines** associés à un Nom De Domaine
+- 🛡️ **DDoS**
+- 🖼️ **Changement d'image aléatoire** via une API tierce
+- 📇 **Génération d'identité fictive**
+- 🕵️ **Crawler d'information** sur une personne (à partir d'un nom/prénom)
+- 🔑 **Générateur de mots de passe sécurisé**
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## 🔧 Technologies Utilisées
+Le projet utilise les technologies suivantes :
+- **TypeScript** pour un typage statique sûr.
+- **Express** comme framework backend.
+- **Zod** pour la validation des schémas et la génération de documentation avec @asteasolutions/zod-to-openapi.
+- **Swagger** pour la documentation de l'API.
+- **Vitest** pour les tests.
+- **Husky** pour les hooks Git.
+- **dotenv** pour la gestion des variables d'environnement.
+- **pino** pour le logging.
+- **helmet** pour la sécurité HTTP.
+- **express-rate-limit** pour la limitation de débit.
 
-## Add your files
+## 📝 Pré-requis
+Avant de commencer, assurez-vous d'avoir installé :
+- **Node.js** (>= 22.9.0)
+- **npm** (>= 10.8.2)
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
+## 🚀 Installation
+### 1. Cloner le dépôt
+```bash
+git clone https://gitlab.com/api347245/hackr.git
+cd hackr
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/api347245/hackr.git
-git branch -M main
-git push -uf origin main
+
+### 2. Installer les dépendances
+```bash
+npm install
 ```
 
-## Integrate with your tools
+### 3. Configuration de l'environnement
+### 3. Configuration de l'environnement
+Renommez le fichier `.env.template` à la racine du projet en `.env` et configurez les variables d'environnement nécessaires :
+```bash
+mv .env.sample .env
+```
 
-- [ ] [Set up project integrations](https://gitlab.com/api347245/hackr/-/settings/integrations)
+### 4. Compilation et Démarrage
+- En mode développement :
+```bash
+npm run dev
+```
 
-## Collaborate with your team
+- Pour une version de production :
+```bash
+npm run build
+npm start
+```
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+## 📜 Scripts Disponibles
+Le `package.json` définit plusieurs scripts pour faciliter le développement et le déploiement de l'API :
+- **`npm run dev`** : Démarrer l'application en mode développement avec rechargement automatique.
+- **`npm run build`** : Compiler le projet TypeScript en JavaScript.
+- **`npm start`** : Démarrer l'application compilée en mode production.
+- **`npm run lint`** : Lancer l'analyse du code avec ESLint.
+- **`npm run lint:fix`** : Corriger automatiquement les erreurs ESLint.
+- **`npm run format`** : Formater le code avec Prettier.
+- **`npm run test`** : Exécuter les tests unitaires avec Vitest.
+- **`npm run clean`** : Supprimer les fichiers de compilation et de couverture de test.
 
-## Test and Deploy
+## 📖 Swagger Documentation
+Pour consulter la documentation interactive de l'API, démarrez le projet et accédez à :
+```
+http://localhost:3000/api-docs
+```
 
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+## 🚀 Utilisation
+### Routes Disponibles
+L'API expose plusieurs routes, par exemple :
+- **POST /auth/login** : Connexion et récupération de JWT.
+- **POST /auth/register** : Inscription d'un nouvel utilisateur.
