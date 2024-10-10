@@ -8,6 +8,7 @@ Bienvenue dans le projet **HackR**, une API qui met à disposition des outils de
 - [Technologies Utilisées](#technologies-utilisées)
 - [Pré-requis](#pré-requis)
 - [Installation](#installation)
+- [Base de données](#base-de-données)
 - [Scripts Disponibles](#scripts-disponibles)
 - [Structure du Projet](#structure-du-projet)
 - [Swagger Documentation](#swagger-documentation)
@@ -40,6 +41,7 @@ Le projet utilise les technologies suivantes :
 - **pino** pour le logging.
 - **helmet** pour la sécurité HTTP.
 - **express-rate-limit** pour la limitation de débit.
+- **prisma** pour l'ORM et la gestion de la base de données.
 
 ## 📝 Pré-requis
 Avant de commencer, assurez-vous d'avoir installé :
@@ -59,7 +61,6 @@ npm install
 ```
 
 ### 3. Configuration de l'environnement
-### 3. Configuration de l'environnement
 Renommez le fichier `.env.template` à la racine du projet en `.env` et configurez les variables d'environnement nécessaires :
 ```bash
 mv .env.sample .env
@@ -77,10 +78,27 @@ npm run build
 npm start
 ```
 
+## 📦 Base de Données
+### Utilisation de Docker pour le Développement Local
+
+Pour faciliter le développement local, vous pouvez utiliser Docker et `docker-compose`. Voici les étapes à suivre :
+
+### 1. Démarrer la Base de Données
+```bash
+npm run db:start
+```
+
+### 2. Arrêter la Base de Données
+```bash
+npm run db:stop
+```
+
 ## 📜 Scripts Disponibles
 Le `package.json` définit plusieurs scripts pour faciliter le développement et le déploiement de l'API :
 - **`npm run dev`** : Démarrer l'application en mode développement avec rechargement automatique.
 - **`npm run build`** : Compiler le projet TypeScript en JavaScript.
+- **`npm run bd:start`** : Démarrer la base de données PostgreSQL avec Docker.
+- **`npm run bd:stop`** : Arrêter la base de données PostgreSQL avec Docker.
 - **`npm start`** : Démarrer l'application compilée en mode production.
 - **`npm run lint`** : Lancer l'analyse du code avec ESLint.
 - **`npm run lint:fix`** : Corriger automatiquement les erreurs ESLint.
