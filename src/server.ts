@@ -4,13 +4,14 @@ import helmet from 'helmet'
 import { pino } from 'pino'
 
 import { openAPIRouter } from '@/api-docs/openAPIRouter'
-import { healthCheckRouter } from '@/api/healthCheck/healthCheckRouter'
 import { userRouter } from '@/api/user/userRouter'
 import errorHandler from '@/common/middleware/errorHandler'
 import rateLimiter from '@/common/middleware/rateLimiter'
 import requestLogger from '@/common/middleware/requestLogger'
 import { env } from '@/common/utils/envConfig'
 import { PrismaClient } from '@prisma/client'
+
+import { authRouter } from './api/auth/router'
 
 const logger = pino({ name: 'server start' })
 const app: Express = express()
@@ -31,8 +32,8 @@ app.use(rateLimiter)
 app.use(requestLogger)
 
 // Routes
-app.use('/health-check', healthCheckRouter)
 app.use('/users', userRouter)
+app.use('/auth', authRouter)
 
 // Swagger UI
 app.use(openAPIRouter)

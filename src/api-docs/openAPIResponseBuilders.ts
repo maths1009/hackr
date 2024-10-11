@@ -2,8 +2,23 @@ import { StatusCodes } from 'http-status-codes'
 import type { z } from 'zod'
 
 import { ServiceResponseSchema } from '@/common/models/serviceResponse'
+import type { ResponseConfig } from '@asteasolutions/zod-to-openapi'
 
-export function createApiResponse(schema: z.ZodTypeAny, description: string, statusCode = StatusCodes.OK) {
+type ApiResponseConfig = {
+	schema?: z.ZodTypeAny
+	description: string
+	statusCode?: StatusCodes
+}
+
+type ApiResponse = {
+	[statusCode: number]: ResponseConfig
+}
+
+export const createApiResponse = ({
+	schema,
+	description,
+	statusCode = StatusCodes.OK,
+}: ApiResponseConfig): ApiResponse => {
 	return {
 		[statusCode]: {
 			description,
@@ -15,3 +30,8 @@ export function createApiResponse(schema: z.ZodTypeAny, description: string, sta
 		},
 	}
 }
+
+export const createApiResponses = (configs: ApiResponseConfig[]) =>
+	configs.reduce((acc, config) => {
+		return { ...acc, ...createApiResponse(config) }
+	}, {})
