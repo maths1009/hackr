@@ -3,6 +3,8 @@ version: '3.8'
 networks:
   db:
     driver: bridge
+  elk:
+    driver: bridge
 
 services:
   mariadb:
@@ -34,5 +36,35 @@ services:
     networks:
       - db
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.6
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - '9200:9200'
+    networks:
+      - elk
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.17.6
+    container_name: kibana
+    ports:
+      - '5601:5601'
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+    networks:
+      - elk
+
 volumes:
+  elk:
+    driver: bridge
   mariadb_data:

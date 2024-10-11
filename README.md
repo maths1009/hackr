@@ -78,20 +78,42 @@ npm run build
 npm start
 ```
 
+### 5. Base de Données
+Pour utiliser la base de données, vous devez configurer les variables d'environnement suivantes :
+```bash
+DATABASE_URL="mysql://USER:PASSWORD@HOST:PORT/DATABASE"
+```
+
+Demarer la base de données avec Docker :
+```bash
+npm run db:start
+```
+
+Executer une premiere requête pour initialiser les logs
+
+Aller sur ce lien http://localhost:5601/app/management/kibana/indexPatterns pour créer un nouvelle index, cliquer sur le lien pour créer un index 
+
+Donner lui un nom puis rentrer ceci dans Custom index pattern ID
+```pino-logs```
+Selectionner un Timestamp field puis créer votre key, une fois fait créer votre vue pour voir vos logs
+
+
 ## 📦 Base de Données
 ### Utilisation de Docker pour le Développement Local
 
 Pour faciliter le développement local, vous pouvez utiliser Docker et `docker-compose`. Voici les étapes à suivre :
 
-### 1. Démarrer la Base de Données
+### 1. Démarrer les services de Base de Données
 ```bash
 npm run db:start
 ```
 
-### 2. Arrêter la Base de Données
+### 2. Arrêter les services de Base de Données
 ```bash
 npm run db:stop
 ```
+
+
 
 ## 📜 Scripts Disponibles
 Le `package.json` définit plusieurs scripts pour faciliter le développement et le déploiement de l'API :

@@ -24,22 +24,6 @@ type PinoCustomProps = {
 	responseBody: unknown
 }
 
-const requestLogger = (options?: Options): RequestHandler[] => {
-	const pinoOptions: Options = {
-		enabled: env.isProduction,
-		customProps: customProps as unknown as Options['customProps'],
-		redact: [],
-		genReqId,
-		customLogLevel,
-		customSuccessMessage,
-		customReceivedMessage: req => `request received: ${req.method}`,
-		customErrorMessage: (_req, res) => `request errored with status code: ${res.statusCode}`,
-		customAttributeKeys,
-		...options,
-	}
-	return [responseBodyMiddleware, pinoHttp(pinoOptions)]
-}
-
 const customAttributeKeys: CustomAttributeKeys = {
 	req: 'request',
 	res: 'response',
@@ -87,4 +71,19 @@ const genReqId = (req: IncomingMessage, res: ServerResponse<IncomingMessage>) =>
 	return id
 }
 
-export default requestLogger()
+const requestLogger = (options?: Options): RequestHandler[] => {
+	const pinoOptions: Options = {
+		customProps: customProps as unknown as Options['customProps'],
+		redact: [],
+		genReqId,
+		customLogLevel,
+		customSuccessMessage,
+		customReceivedMessage: req => `request received: ${req.method}`,
+		customErrorMessage: (_req, res) => `request errored with status code: ${res.statusCode}`,
+		customAttributeKeys,
+		...options,
+	}
+	return [responseBodyMiddleware, pinoHttp(pinoOptions)]
+}
+
+export default requestLogger

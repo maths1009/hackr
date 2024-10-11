@@ -2,6 +2,7 @@ import cors from 'cors'
 import express, { type Express } from 'express'
 import helmet from 'helmet'
 import { pino } from 'pino'
+import pinoElastic from 'pino-elasticsearch'
 
 import { openAPIRouter } from '@/api-docs/openAPIRouter'
 import { userRouter } from '@/api/user/userRouter'
@@ -13,7 +14,14 @@ import { PrismaClient } from '@prisma/client'
 
 import { authRouter } from './api/auth/router'
 
-const logger = pino({ name: 'server start' })
+const streamToElastic = pinoElastic({
+	index: 'pino-logs',
+	node: 'http://localhost:9200',
+	esVersion: 7,
+	flushBytes: 1000,
+})
+
+const logger = pino({ name: 'hackR log' }, streamToElastic)
 const app: Express = express()
 
 // DATABASE
@@ -29,7 +37,7 @@ app.use(helmet())
 app.use(rateLimiter)
 
 // Request logging
-app.use(requestLogger)
+app.use(...requestLogger({ logger: logger }))
 
 // Routes
 app.use('/users', userRouter)
