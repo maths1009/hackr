@@ -1,8 +1,9 @@
 import { authRegistry } from '@/api/auth/router'
+import { logsRegistry } from '@/api/logs/router'
 import { OpenAPIRegistry, OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi'
 
 export const generateOpenAPIDocument = () => {
-	const registry = new OpenAPIRegistry([authRegistry])
+	const registry = new OpenAPIRegistry([authRegistry, logsRegistry])
 	const generator = new OpenApiGeneratorV3(registry.definitions)
 
 	return generator.generateDocument({

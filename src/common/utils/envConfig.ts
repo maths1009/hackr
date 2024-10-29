@@ -16,4 +16,5 @@ export const env = cleanEnv(process.env, {
 	DATABASE_URL: str({ devDefault: 'mysql://root:root@localhost:3306/test?schema=public' }),
 	JWT_SECRET: str({ devDefault: 'secretdev' }),
 	JWT_DURATION: str({ devDefault: '1h' }),
+	ELK_HOST: str({ devDefault: 'http://localhost:9200' }),
 })
