@@ -1,5 +1,6 @@
 import { z } from 'zod'
 
+import { ROLE } from '@/type'
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi'
 
 extendZodWithOpenApi(z)
@@ -9,7 +10,7 @@ export const RegisterBodySchema = z.object({
 	name: z.string(),
 	email: z.string().email(),
 	password: z.string(),
-	roleId: z.number(),
+	role: z.nativeEnum(ROLE),
 })
 
 export type RegisterResponse = z.infer<typeof RegisterResponseSchema>

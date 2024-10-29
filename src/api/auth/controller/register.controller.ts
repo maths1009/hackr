@@ -11,7 +11,7 @@ class RegisterController {
 			req.body.name,
 			req.body.email,
 			req.body.password,
-			req.body.roleId,
+			req.body.role,
 		)
 		return handleServiceResponse(serviceResponse, res)
 	}

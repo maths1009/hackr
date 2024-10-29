@@ -5,21 +5,21 @@ import { RegisterResponse } from '../model/register.model'
 import { generateToken, hashPassword } from '../utils'
 
 export class RegisterRepository {
-	async registerAsync(name: string, email: string, password: string, roleId: number): Promise<RegisterResponse | null> {
-		const role = await prisma.roles.findUnique({
-			where: { id: roleId },
+	async registerAsync(name: string, email: string, password: string, role: ROLE): Promise<RegisterResponse | null> {
+		const findRole = await prisma.roles.findFirst({
+			where: { name: role },
 		})
-		if (!role) return null
+		if (!findRole) return null
 		const newUser = await prisma.users.create({
 			data: {
 				email,
 				name,
 				createdAt: new Date().toISOString(),
 				password: await hashPassword(password),
-				id_roles: roleId,
+				id_roles: findRole.id,
 			},
 		})
-		return { token: generateToken(newUser.id.toString(), role.name as ROLE) }
+		return { token: generateToken(newUser.id.toString(), role) }
 	}
 }
 
