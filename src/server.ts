@@ -5,7 +5,6 @@ import { pino } from 'pino'
 import pinoElastic from 'pino-elasticsearch'
 
 import { openAPIRouter } from '@/api-docs/openAPIRouter'
-import { userRouter } from '@/api/user/userRouter'
 import errorHandler from '@/common/middleware/errorHandler'
 import rateLimiter from '@/common/middleware/rateLimiter'
 import requestLogger from '@/common/middleware/requestLogger'
@@ -40,7 +39,6 @@ app.use(rateLimiter)
 app.use(...requestLogger({ logger: logger }))
 
 // Routes
-app.use('/users', userRouter)
 app.use('/auth', authRouter)
 
 // Swagger UI
