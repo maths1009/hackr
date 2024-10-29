@@ -14,6 +14,6 @@ export const env = cleanEnv(process.env, {
 	COMMON_RATE_LIMIT_MAX_REQUESTS: num({ default: 1000 }),
 	COMMON_RATE_LIMIT_WINDOW_MS: num({ default: 60000 }),
 	DATABASE_URL: str({ devDefault: 'mysql://root:root@localhost:3306/test?schema=public' }),
-	JWT_SECRET: str({ devDefault: testOnly('') }),
-	JWT_DURATION: str({ devDefault: testOnly('') }),
+	JWT_SECRET: str({ devDefault: 'secretdev' }),
+	JWT_DURATION: str({ devDefault: '1h' }),
 })
