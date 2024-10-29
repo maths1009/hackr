@@ -7,12 +7,7 @@ import { registerService } from '../service/register.service'
 
 class RegisterController {
 	public register: RequestHandler = async (req: Request<object, object, RegisterBody>, res: Response) => {
-		const serviceResponse = await registerService.register(
-			req.body.name,
-			req.body.email,
-			req.body.password,
-			req.body.role,
-		)
+		const serviceResponse = await registerService.register(req.body)
 		return handleServiceResponse(serviceResponse, res)
 	}
 }

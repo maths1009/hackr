@@ -3,9 +3,11 @@
 	"version": "1.0.0",
 	"author": "Mathis Brangeon",
 	"repository": "https://gitlab.com/api347245/hackr",
+	"packageManager": "npm@10.8.3",
 	"license": "MIT",
 	"main": "index.ts",
 	"private": true,
+	"workspaces": [],
 	"scripts": {
 		"dev": "tsx watch --clear-screen=false src/index.ts | pino-pretty",
 		"build": "tsup",
@@ -17,6 +19,8 @@
 		"lint:fix": "eslint --fix ./src",
 		"format": "prettier --write .",
 		"test": "vitest run",
+		"typecheck": "tsc --noEmit",
+		"sherif": "npx sherif@latest -r packages-without-package-json -r root-package-dependencies",
 		"prepare": "husky"
 	},
 	"dependencies": {
