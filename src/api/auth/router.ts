@@ -48,6 +48,9 @@ authRegistry.registerPath(
 			responses: createApiResponses([
 				{ schema: RegisterResponseSchema, description: 'Success', statusCode: StatusCodes.CREATED },
 				{ description: 'Invalid role', statusCode: StatusCodes.BAD_REQUEST },
+				{ description: 'User already exists', statusCode: StatusCodes.CONFLICT },
+				{ description: 'Internal server error', statusCode: StatusCodes.INTERNAL_SERVER_ERROR },
+				{ description: 'Invalid body', statusCode: StatusCodes.UNPROCESSABLE_ENTITY },
 			]),
 		},
 	}),
