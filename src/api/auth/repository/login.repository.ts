@@ -1,5 +1,5 @@
 import { prisma } from '@/server'
-import { ROLE } from '@/type'
+import { ROLE } from '@/types'
 
 import { ERROR } from '../constant'
 import { comparePassword, generateToken } from '../utils'

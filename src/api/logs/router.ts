@@ -4,7 +4,9 @@ import { StatusCodes } from 'http-status-codes'
 import { createApiBody } from '@/api-docs/openAPIBodyBuilders'
 import { registerPath } from '@/api-docs/openAPIRegister'
 import { createApiResponses } from '@/api-docs/openAPIResponseBuilders'
+import { authMiddleware } from '@/common/middleware/authMiddleware'
 import { validateRequest } from '@/common/utils/httpHandlers'
+import { ROLE } from '@/types'
 import { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi'
 
 import { logsController } from './controller'
@@ -15,7 +17,7 @@ export const logsRouter: Router = express.Router()
 
 //TODO: Review this webservice, POST to get with params and selector of data to get
 
-logsRouter.post('/', validateRequest(PostLogsSchema), logsController.getLogs)
+logsRouter.post('/', authMiddleware(ROLE.ADMIN), validateRequest(PostLogsSchema), logsController.getLogs)
 
 logsRegistry.registerPath(
 	registerPath({
@@ -32,5 +34,6 @@ logsRegistry.registerPath(
 				{ description: 'Invalid body', statusCode: StatusCodes.INTERNAL_SERVER_ERROR },
 			]),
 		},
+		protectedRoute: true,
 	}),
 )

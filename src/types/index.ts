@@ -1,3 +1,4 @@
+//! Order is important, because it defines the order of priority of the roles
 export enum ROLE {
 	ADMIN = 'ADMIN',
 	USER = 'USER',

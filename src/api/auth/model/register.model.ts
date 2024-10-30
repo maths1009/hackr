@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { ROLE } from '@/type'
+import { ROLE } from '@/types'
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi'
 
 extendZodWithOpenApi(z)

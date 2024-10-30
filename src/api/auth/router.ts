@@ -4,7 +4,9 @@ import { StatusCodes } from 'http-status-codes'
 import { createApiBody } from '@/api-docs/openAPIBodyBuilders'
 import { registerPath } from '@/api-docs/openAPIRegister'
 import { createApiResponses } from '@/api-docs/openAPIResponseBuilders'
+import { authMiddleware } from '@/common/middleware/authMiddleware'
 import { validateRequest } from '@/common/utils/httpHandlers'
+import { ROLE } from '@/types'
 import { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi'
 
 import { loginController } from './controller/login.controller'
@@ -31,11 +33,15 @@ authRegistry.registerPath(
 				{ description: 'Invalid body', statusCode: StatusCodes.UNPROCESSABLE_ENTITY },
 			]),
 		},
-		protectedRoute: false,
 	}),
 )
 
-authRouter.post('/register', validateRequest(PostRegisterSchema), registerController.register)
+authRouter.post(
+	'/register',
+	authMiddleware(ROLE.ADMIN),
+	validateRequest(PostRegisterSchema),
+	registerController.register,
+)
 authRegistry.registerPath(
 	registerPath({
 		config: {
@@ -53,5 +59,6 @@ authRegistry.registerPath(
 				{ description: 'Invalid body', statusCode: StatusCodes.UNPROCESSABLE_ENTITY },
 			]),
 		},
+		protectedRoute: true,
 	}),
 )

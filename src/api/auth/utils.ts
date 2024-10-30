@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
 import { env } from '@/common/utils/envConfig'
-import { ROLE, Token } from '@/type'
+import { ROLE, Token } from '@/types'
 
 /**
  * Generates a JWT token for the given user ID.

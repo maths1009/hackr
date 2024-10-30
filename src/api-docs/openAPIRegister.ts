@@ -9,16 +9,21 @@ type RegisterPathParams = {
 	protectedRoute?: boolean
 }
 
-export const registerPath = ({ config, protectedRoute: protectedRoute = true }: RegisterPathParams): RouteConfig => {
+export const registerPath = ({ config, protectedRoute: protectedRoute = false }: RegisterPathParams): RouteConfig => {
 	return {
 		...config,
 		responses: {
 			...config.responses,
-			...(protectedRoute &&
-				createApiResponse({
+			...(protectedRoute && {
+				...createApiResponse({
 					statusCode: StatusCodes.UNAUTHORIZED,
+					description: 'Authorization header missing or Invalid token',
+				}),
+				...createApiResponse({
+					statusCode: StatusCodes.FORBIDDEN,
 					description: 'Unauthorized',
-				})),
+				}),
+			}),
 		},
 	}
 }
