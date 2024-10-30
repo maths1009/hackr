@@ -17,7 +17,6 @@ export const validateRequest = (schema: ZodSchema) => (req: Request, res: Respon
 		schema.parse({ body: req.body, query: req.query, params: req.params })
 		next()
 	} catch (err) {
-		console.log(err)
 		const errorMessage = `Invalid input: ${(err as ZodError).errors.map(e => `${e.path.join('.')} = ${e.message}`).join(', ')}`
 		const statusCode = StatusCodes.UNPROCESSABLE_ENTITY
 		const serviceResponse = ServiceResponse.failure(errorMessage, null, statusCode)

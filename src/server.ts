@@ -14,6 +14,7 @@ import { PrismaClient } from '@prisma/client'
 
 import { authRouter } from './api/auth/router'
 import { logsRouter } from './api/logs/router'
+import { passwordRouter } from './api/password/router'
 
 // ELK
 const esClient = new Client({ node: env.ELK_HOST })
@@ -47,6 +48,7 @@ app.use(...requestLogger({ logger: logger }))
 // Routes
 app.use('/auth', authRouter)
 app.use('/logs', logsRouter)
+app.use('/password', passwordRouter)
 
 // Swagger UI
 app.use(openAPIRouter)

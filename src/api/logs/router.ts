@@ -30,8 +30,8 @@ logsRegistry.registerPath(
 			},
 			responses: createApiResponses([
 				{ description: 'Success', schema: ResponseSchema },
-				{ description: 'Internal server error', statusCode: StatusCodes.UNPROCESSABLE_ENTITY },
-				{ description: 'Invalid body', statusCode: StatusCodes.INTERNAL_SERVER_ERROR },
+				{ description: 'Invalid body', statusCode: StatusCodes.UNPROCESSABLE_ENTITY },
+				{ description: 'Internal server error', statusCode: StatusCodes.INTERNAL_SERVER_ERROR },
 			]),
 		},
 		protectedRoute: true,
