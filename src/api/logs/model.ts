@@ -1,21 +1,34 @@
 import { z } from 'zod'
 
+import { ROUTE } from '@/common/helpers/route'
 import { ServiceResponseSchema } from '@/common/models/serviceResponse'
-import { validDate } from '@/common/utils/commonValidation'
+import { commonValidations, validDate } from '@/common/utils/commonValidation'
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi'
 
 extendZodWithOpenApi(z)
 
-export type Body = z.infer<typeof BodySchema>
-export const BodySchema = z
+export type Querries = z.infer<typeof QuerriesSchema>
+export const QuerriesSchema = z
 	.object({
-		start_date: validDate('start_date'),
-		end_date: validDate('end_date'),
+		startDate: validDate('startDate'),
+		endDate: validDate('endDate'),
+		userId: commonValidations.id.optional(),
+		request: z.preprocess(
+			val => (typeof val === 'string' ? val.replace(/^\//, '') : val),
+			z.enum(Object.values(ROUTE).map(route => route.slice(1)) as [string, ...string[]]).optional(),
+		),
 	})
-	.refine(data => data.start_date <= data.end_date, {
-		message: 'start_date must be before or equal to end_date',
-		path: ['start_date'],
-	})
+	.refine(
+		data => {
+			const startDate = new Date(data.startDate)
+			const endDate = new Date(data.endDate)
+			return startDate <= endDate
+		},
+		{
+			message: 'start_date must be before or equal to end_date',
+			path: ['startDate'],
+		},
+	)
 
 export type Response = z.infer<typeof ResponseSchema>
 export const ResponseSchema = z.array(
@@ -31,7 +44,7 @@ export const ResponseSchema = z.array(
 )
 
 export const PostLogsSchema = z.object({
-	body: BodySchema,
+	query: QuerriesSchema,
 })
 
 export interface LogDocument {

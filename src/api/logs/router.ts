@@ -1,7 +1,6 @@
 import express, { type Router } from 'express'
 import { StatusCodes } from 'http-status-codes'
 
-import { createApiBody } from '@/api-docs/openAPIBodyBuilders'
 import { registerPath } from '@/api-docs/openAPIRegister'
 import { createApiResponses } from '@/api-docs/openAPIResponseBuilders'
 import { ROUTE } from '@/common/helpers/route'
@@ -11,27 +10,26 @@ import { ROLE } from '@/types'
 import { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi'
 
 import { logsController } from './controller'
-import { BodySchema, PostLogsSchema, ResponseSchema } from './model'
+import { PostLogsSchema, QuerriesSchema, ResponseSchema } from './model'
 
 export const logsRegistry = new OpenAPIRegistry()
 export const logsRouter: Router = express.Router()
 
-//TODO: Review this webservice, POST to get with params and selector of data to get
-
-logsRouter.post('/', authMiddleware(ROLE.ADMIN), validateRequest(PostLogsSchema), logsController.getLogs)
+//@ts-expect-error Type mismatch between PostLogsSchema and expected schema
+logsRouter.get('/', authMiddleware(ROLE.ADMIN), validateRequest(PostLogsSchema), logsController.getLogs)
 
 logsRegistry.registerPath(
 	registerPath({
 		config: {
-			method: 'post',
+			method: 'get',
 			path: ROUTE.LOGS,
 			tags: ['Logs'],
 			request: {
-				body: createApiBody(BodySchema),
+				query: QuerriesSchema,
 			},
 			responses: createApiResponses([
 				{ description: 'Success', schema: ResponseSchema },
-				{ description: 'Invalid body', statusCode: StatusCodes.UNPROCESSABLE_ENTITY },
+				{ description: 'Invalid querries params', statusCode: StatusCodes.UNPROCESSABLE_ENTITY },
 				{ description: 'Internal server error', statusCode: StatusCodes.INTERNAL_SERVER_ERROR },
 			]),
 		},

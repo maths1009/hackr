@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes'
 
 import { ServiceResponse } from '@/common/models/serviceResponse'
 
-import { LogDocument, Response } from './model'
+import { LogDocument, Querries, Response } from './model'
 import { LogsRepository } from './repository'
 
 export class LogsService {
@@ -12,9 +12,14 @@ export class LogsService {
 		this.logsRepository = repository
 	}
 
-	async getLogs(start: string, end: string): Promise<ServiceResponse<Response | null>> {
+	async getLogs(querries: Querries): Promise<ServiceResponse<Response | null>> {
 		try {
-			const logs = await this.logsRepository.getLogsAsync(start, end)
+			const logs = await this.logsRepository.getLogsAsync(
+				querries.startDate,
+				querries.endDate,
+				querries.userId?.toString(),
+				querries.request,
+			)
 			const transformedLogs: Response = logs.hits.hits.map(l => {
 				const log = (l as LogDocument)._source
 				return {

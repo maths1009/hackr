@@ -18,12 +18,12 @@ import { PostRegisterSchema, RegisterBodySchema, RegisterResponseSchema } from '
 export const authRegistry = new OpenAPIRegistry()
 export const authRouter: Router = express.Router()
 
-authRouter.post(AUTH_ROUTE.LOGIN, validateRequest(PostLoginSchema), loginController.login)
+authRouter.post(ROUTE.LOGIN, validateRequest(PostLoginSchema), loginController.login)
 authRegistry.registerPath(
 	registerPath({
 		config: {
 			method: 'post',
-			path: ROUTE.LOGIN,
+			path: AUTH_ROUTE.LOGIN,
 			tags: ['Auth'],
 			request: {
 				body: createApiBody(LoginBodySchema),
@@ -38,7 +38,7 @@ authRegistry.registerPath(
 )
 
 authRouter.post(
-	AUTH_ROUTE.REGISTER,
+	ROUTE.REGISTER,
 	authMiddleware(ROLE.ADMIN),
 	validateRequest(PostRegisterSchema),
 	registerController.register,
@@ -47,7 +47,7 @@ authRegistry.registerPath(
 	registerPath({
 		config: {
 			method: 'post',
-			path: ROUTE.REGISTER,
+			path: AUTH_ROUTE.REGISTER,
 			tags: ['Auth'],
 			request: {
 				body: createApiBody(RegisterBodySchema),
