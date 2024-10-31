@@ -1,8 +1,8 @@
+import { comparePassword, generateToken } from '@/common/utils/auth'
 import { prisma } from '@/server'
 import { ROLE } from '@/types'
 
 import { ERROR } from '../constant'
-import { comparePassword, generateToken } from '../utils'
 
 export class LoginRepository {
 	async loginAsync(email: string, password: string): Promise<string> {
@@ -15,7 +15,7 @@ export class LoginRepository {
 		const userRole = await prisma.roles.findUnique({ where: { id: user.id_roles } })
 		const role = ROLE[userRole!.name as keyof typeof ROLE]
 
-		return generateToken(user.id.toString(), role)
+		return generateToken(user.id, role)
 	}
 }
 

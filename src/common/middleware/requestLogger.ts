@@ -7,6 +7,8 @@ import { type CustomAttributeKeys, type Options, pinoHttp } from 'pino-http'
 
 import { env } from '@/common/utils/envConfig'
 
+import { decodeToken } from '../utils/auth'
+
 enum LogLevel {
 	Fatal = 'fatal',
 	Error = 'error',
@@ -22,6 +24,7 @@ type PinoCustomProps = {
 	response: Response
 	error: Error
 	responseBody: unknown
+	userId: string | undefined
 }
 
 const customAttributeKeys: CustomAttributeKeys = {
@@ -31,12 +34,17 @@ const customAttributeKeys: CustomAttributeKeys = {
 	responseTime: 'timeTaken',
 }
 
-const customProps = (req: Request, res: Response): PinoCustomProps => ({
-	request: req,
-	response: res,
-	error: res.locals.err,
-	responseBody: res.locals.responseBody,
-})
+const customProps = (req: Request, res: Response): PinoCustomProps => {
+	const authHeader = req.headers.authorization
+	const tokenData = authHeader ? decodeToken(authHeader) : null
+	return {
+		request: req,
+		response: res,
+		error: res.locals.err,
+		responseBody: res.locals.responseBody,
+		userId: tokenData ? tokenData.id : undefined,
+	}
+}
 
 const responseBodyMiddleware: RequestHandler = (_req, res, next) => {
 	const isNotProduction = !env.isProduction

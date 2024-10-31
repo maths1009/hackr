@@ -9,33 +9,22 @@ import { ROLE, Token } from '@/types'
  * @param userId - The ID of the user.
  * @returns The generated JWT token.
  */
-export const generateToken = (id: string, role: ROLE) => {
+export const generateToken = (id: number, role: ROLE) => {
 	return jwt.sign({ id, role }, env.JWT_SECRET, {
 		expiresIn: env.JWT_DURATION,
 	})
 }
-
-type isValid = {
-	decodedToken: Token
-	isValid: true
-}
-type isNotValid = {
-	decodedToken: undefined
-	isValid: false
-}
-type checkTokenReturn = isValid | isNotValid
 
 /**
  * Checks the validity of a JWT token.
  * @param token - The JWT token to be checked.
  * @returns An object containing the decoded token and a flag indicating its validity.
  */
-export const checkToken = (token: string): checkTokenReturn => {
+export const decodeToken = (token: string): Token | undefined => {
 	try {
-		const decodedToken = jwt.verify(token.split(' ')[1], env.JWT_SECRET) as Token
-		return { decodedToken, isValid: true }
+		return jwt.verify(token.split(' ')[1], env.JWT_SECRET) as Token
 	} catch {
-		return { decodedToken: undefined, isValid: false }
+		return undefined
 	}
 }
 

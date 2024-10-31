@@ -1,8 +1,8 @@
+import { generateToken, hashPassword } from '@/common/utils/auth'
 import { prisma } from '@/server'
 import { ROLE } from '@/types'
 
 import { ERROR } from '../constant'
-import { generateToken, hashPassword } from '../utils'
 
 export class RegisterRepository {
 	async registerAsync(name: string, email: string, password: string, role: ROLE): Promise<string> {
@@ -23,7 +23,7 @@ export class RegisterRepository {
 				id_roles: findRole.id,
 			},
 		})
-		return generateToken(newUser.id.toString(), role)
+		return generateToken(newUser.id, role)
 	}
 }
 

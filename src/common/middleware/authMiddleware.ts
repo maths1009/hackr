@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 
-import { checkToken } from '@/api/auth/utils'
+import { decodeToken } from '@/common/utils/auth'
 import { ROLE } from '@/types'
 
 import { ServiceResponse } from '../models/serviceResponse'
@@ -17,15 +17,15 @@ export const authMiddleware = (requiredRole: ROLE) => (req: Request, res: Respon
 		)
 	}
 
-	const { isValid, decodedToken } = checkToken(authHeader)
+	const token = decodeToken(authHeader)
 
-	if (!isValid) {
+	if (!token) {
 		return handleServiceResponse(ServiceResponse.failure('Invalid token', null, StatusCodes.UNAUTHORIZED), res)
 	}
 
-	req.user = decodedToken
+	req.user = token
 
-	if (Object.values(ROLE).indexOf(decodedToken.role) > Object.values(ROLE).indexOf(requiredRole)) {
+	if (Object.values(ROLE).indexOf(token.role) > Object.values(ROLE).indexOf(requiredRole)) {
 		return handleServiceResponse(ServiceResponse.failure('Insufficient role', null, StatusCodes.FORBIDDEN), res)
 	}
 
