@@ -1,0 +1,49 @@
+image: node:22.9.0
+
+stages:
+  - format
+  - lint
+  - typecheck
+  - build
+  - test
+  - deploy
+
+format-job:
+  stage: format
+  script:
+    - npm run format
+
+lint-job:
+  stage: lint
+  script:
+    - npm run lint
+
+typecheck-job:
+  stage: typecheck
+  script:
+    - npm run typecheck
+
+build-job:
+  stage: build
+  script:
+    - npm install
+    - npm run build
+  artifacts:
+    paths:
+      - dist/
+
+test-job:
+  stage: test
+  script:
+    - npm install
+    - npm test
+  dependencies:
+    - build-job
+
+deploy-job:
+  stage: deploy
+  script:
+    - echo "Déploiement de l'application... quand j'aurais un vps :)"
+    - exit 1
+  only:
+    - main
