@@ -5,8 +5,8 @@ export enum AUTH_ROUTE {
 
 export enum ROUTE {
 	AUTH = '/auth',
-    LOGIN = `${ROUTE.AUTH}${AUTH_ROUTE.LOGIN}`,
-    REGISTER = `${ROUTE.AUTH}${AUTH_ROUTE.REGISTER}`,
+	LOGIN = `${ROUTE.AUTH}${AUTH_ROUTE.LOGIN}`,
+	REGISTER = `${ROUTE.AUTH}${AUTH_ROUTE.REGISTER}`,
 	LOGS = '/logs',
 	PASSWORD = '/password',
 }

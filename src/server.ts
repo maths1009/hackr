@@ -27,13 +27,15 @@ const streamToElastic = pinoElastic({
 	esVersion: 8,
 	flushBytes: 1000,
 })
-
 const logger = pino({ name: 'hackR log' }, streamToElastic)
+
+// App
 const app: Express = express()
 
 // DATABASE
 const prisma = new PrismaClient()
 
+// Trust proxy
 app.set('trust proxy', true)
 
 // Middlewares
@@ -44,7 +46,8 @@ app.use(helmet())
 app.use(rateLimiter)
 
 // Request logging
-app.use(...requestLogger({ logger: logger }))
+//! Disable the route here because after applying the requestLogger route, the request is already logged, I know middleware would be a better approach
+app.use(...requestLogger({ logger: logger, blacklistedRoutes: [ROUTE.LOGS] }))
 
 // Routes
 app.use(ROUTE.AUTH, authRouter)

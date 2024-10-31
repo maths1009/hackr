@@ -7,6 +7,7 @@ import { type CustomAttributeKeys, type Options, pinoHttp } from 'pino-http'
 
 import { env } from '@/common/utils/envConfig'
 
+import { ROUTE } from '../helpers/route'
 import { decodeToken } from '../utils/auth'
 
 enum LogLevel {
@@ -59,12 +60,19 @@ const responseBodyMiddleware: RequestHandler = (_req, res, next) => {
 	next()
 }
 
-const customLogLevel = (_req: IncomingMessage, res: ServerResponse<IncomingMessage>, err?: Error): LevelWithSilent => {
-	if (err || res.statusCode >= StatusCodes.INTERNAL_SERVER_ERROR) return LogLevel.Error
-	if (res.statusCode >= StatusCodes.BAD_REQUEST) return LogLevel.Warn
-	if (res.statusCode >= StatusCodes.MULTIPLE_CHOICES) return LogLevel.Silent
-	return LogLevel.Info
-}
+const createCustomLogLevel =
+	(blacklistedRoutes: ROUTE[] = []) =>
+	(req: IncomingMessage, res: ServerResponse<IncomingMessage>, err?: Error): LevelWithSilent => {
+		const url = (req as Request).originalUrl || (req as Request).url
+		if (blacklistedRoutes.some(route => url.startsWith(route))) {
+			return LogLevel.Silent
+		}
+
+		if (err || res.statusCode >= StatusCodes.INTERNAL_SERVER_ERROR) return LogLevel.Error
+		if (res.statusCode >= StatusCodes.BAD_REQUEST) return LogLevel.Warn
+		if (res.statusCode >= StatusCodes.MULTIPLE_CHOICES) return LogLevel.Silent
+		return LogLevel.Info
+	}
 
 const customSuccessMessage = (req: IncomingMessage, res: ServerResponse<IncomingMessage>) => {
 	if (res.statusCode === StatusCodes.NOT_FOUND) return getReasonPhrase(StatusCodes.NOT_FOUND)
@@ -79,19 +87,28 @@ const genReqId = (req: IncomingMessage, res: ServerResponse<IncomingMessage>) =>
 	return id
 }
 
-const requestLogger = (options?: Options): RequestHandler[] => {
+interface RequestLoggerOptions extends Options {
+	blacklistedRoutes?: ROUTE[]
+}
+
+const requestLogger = (options?: RequestLoggerOptions): RequestHandler[] => {
 	const pinoOptions: Options = {
 		customProps: customProps as unknown as Options['customProps'],
 		redact: [],
 		genReqId,
-		customLogLevel,
+		customLogLevel: createCustomLogLevel(options?.blacklistedRoutes),
 		customSuccessMessage,
 		customReceivedMessage: req => `request received: ${req.method}`,
 		customErrorMessage: (_req, res) => `request errored with status code: ${res.statusCode}`,
 		customAttributeKeys,
 		...options,
 	}
-	return [responseBodyMiddleware, pinoHttp(pinoOptions)]
+
+	const loggerMiddleware: RequestHandler = (req, res, next) => {
+		pinoHttp(pinoOptions)(req, res, next)
+	}
+
+	return [responseBodyMiddleware, loggerMiddleware]
 }
 
 export default requestLogger
