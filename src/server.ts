@@ -15,6 +15,7 @@ import { PrismaClient } from '@prisma/client'
 import { authRouter } from './api/auth/router'
 import { logsRouter } from './api/logs/router'
 import { passwordRouter } from './api/password/router'
+import { ROUTE } from './common/helpers/route'
 
 // ELK
 const esClient = new Client({ node: env.ELK_HOST })
@@ -46,9 +47,9 @@ app.use(rateLimiter)
 app.use(...requestLogger({ logger: logger }))
 
 // Routes
-app.use('/auth', authRouter)
-app.use('/logs', logsRouter)
-app.use('/password', passwordRouter)
+app.use(ROUTE.AUTH, authRouter)
+app.use(ROUTE.LOGS, logsRouter)
+app.use(ROUTE.PASSWORD, passwordRouter)
 
 // Swagger UI
 app.use(openAPIRouter)

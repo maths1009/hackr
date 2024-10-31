@@ -4,6 +4,7 @@ import { StatusCodes } from 'http-status-codes'
 import { createApiBody } from '@/api-docs/openAPIBodyBuilders'
 import { registerPath } from '@/api-docs/openAPIRegister'
 import { createApiResponses } from '@/api-docs/openAPIResponseBuilders'
+import { AUTH_ROUTE, ROUTE } from '@/common/helpers/route'
 import { authMiddleware } from '@/common/middleware/authMiddleware'
 import { validateRequest } from '@/common/utils/httpHandlers'
 import { ROLE } from '@/types'
@@ -17,12 +18,12 @@ import { PostRegisterSchema, RegisterBodySchema, RegisterResponseSchema } from '
 export const authRegistry = new OpenAPIRegistry()
 export const authRouter: Router = express.Router()
 
-authRouter.post('/login', validateRequest(PostLoginSchema), loginController.login)
+authRouter.post(AUTH_ROUTE.LOGIN, validateRequest(PostLoginSchema), loginController.login)
 authRegistry.registerPath(
 	registerPath({
 		config: {
 			method: 'post',
-			path: '/auth/login',
+			path: ROUTE.LOGIN,
 			tags: ['Auth'],
 			request: {
 				body: createApiBody(LoginBodySchema),
@@ -37,7 +38,7 @@ authRegistry.registerPath(
 )
 
 authRouter.post(
-	'/register',
+	AUTH_ROUTE.REGISTER,
 	authMiddleware(ROLE.ADMIN),
 	validateRequest(PostRegisterSchema),
 	registerController.register,
@@ -46,7 +47,7 @@ authRegistry.registerPath(
 	registerPath({
 		config: {
 			method: 'post',
-			path: '/auth/register',
+			path: ROUTE.REGISTER,
 			tags: ['Auth'],
 			request: {
 				body: createApiBody(RegisterBodySchema),

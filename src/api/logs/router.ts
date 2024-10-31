@@ -4,6 +4,7 @@ import { StatusCodes } from 'http-status-codes'
 import { createApiBody } from '@/api-docs/openAPIBodyBuilders'
 import { registerPath } from '@/api-docs/openAPIRegister'
 import { createApiResponses } from '@/api-docs/openAPIResponseBuilders'
+import { ROUTE } from '@/common/helpers/route'
 import { authMiddleware } from '@/common/middleware/authMiddleware'
 import { validateRequest } from '@/common/utils/httpHandlers'
 import { ROLE } from '@/types'
@@ -23,7 +24,7 @@ logsRegistry.registerPath(
 	registerPath({
 		config: {
 			method: 'post',
-			path: '/logs',
+			path: ROUTE.LOGS,
 			tags: ['Logs'],
 			request: {
 				body: createApiBody(BodySchema),

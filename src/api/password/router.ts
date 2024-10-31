@@ -3,6 +3,7 @@ import { StatusCodes } from 'http-status-codes'
 
 import { registerPath } from '@/api-docs/openAPIRegister'
 import { createApiResponses } from '@/api-docs/openAPIResponseBuilders'
+import { ROUTE } from '@/common/helpers/route'
 import { validateRequest } from '@/common/utils/httpHandlers'
 import { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi'
 
@@ -19,7 +20,7 @@ passwordRegistery.registerPath(
 	registerPath({
 		config: {
 			method: 'get',
-			path: '/password',
+			path: ROUTE.PASSWORD,
 			tags: ['Password'],
 			request: {
 				params: QuerriesSchema,
