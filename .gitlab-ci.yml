@@ -8,6 +8,14 @@ stages:
   - test
   - deploy
 
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+
+before_script:
+  - npm install
+
 format-job:
   stage: format
   script:
@@ -26,7 +34,6 @@ typecheck-job:
 build-job:
   stage: build
   script:
-    - npm install
     - npm run build
   artifacts:
     paths:
@@ -35,7 +42,6 @@ build-job:
 test-job:
   stage: test
   script:
-    - npm install
     - npm test
   dependencies:
     - build-job
