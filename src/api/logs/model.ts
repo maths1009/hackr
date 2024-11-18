@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { z } from 'zod'
 
 import { ROUTE } from '@/common/helpers/route'
@@ -20,9 +21,9 @@ export const QuerriesSchema = z
 	})
 	.refine(
 		data => {
-			const startDate = new Date(data.startDate)
-			const endDate = new Date(data.endDate)
-			return startDate <= endDate
+			const startDate = dayjs(data.startDate)
+			const endDate = dayjs(data.endDate)
+			return startDate.isBefore(endDate) || startDate.isSame(endDate)
 		},
 		{
 			message: 'start_date must be before or equal to end_date',

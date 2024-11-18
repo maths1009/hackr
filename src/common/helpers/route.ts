@@ -4,6 +4,7 @@ export enum ROUTE {
 	REGISTER = `/register`,
 	LOGS = '/logs',
 	PASSWORD = '/password',
+	FAKE_IDENTITY = '/fake-identity',
 }
 
 export enum AUTH_ROUTE {
