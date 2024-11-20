@@ -4,6 +4,7 @@ import { fakeIdentityRegistery } from '@/api/fake-identity/router'
 import { logsRegistry } from '@/api/logs/router'
 import { passwordRegistery } from '@/api/password/router'
 import { randomImageRegistery } from '@/api/random-image/router'
+import { verifEmailRegistery } from '@/api/verif-email/router'
 import { OpenAPIRegistry, OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi'
 
 export const generateOpenAPIDocument = () => {
@@ -14,6 +15,7 @@ export const generateOpenAPIDocument = () => {
 		fakeIdentityRegistery,
 		domainsRegistery,
 		randomImageRegistery,
+		verifEmailRegistery,
 	])
 	const generator = new OpenApiGeneratorV3(registry.definitions)
 
