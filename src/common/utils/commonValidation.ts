@@ -19,3 +19,8 @@ export const validDate = (field: string) =>
 			message: `${field} must be a valid date in ISO 8601 format`,
 		},
 	)
+
+export const validNumber = (field: string) =>
+	z.string().refine(num => !isNaN(Number(num)), {
+		message: `${field} must be a numeric value`,
+	})

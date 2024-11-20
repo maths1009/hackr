@@ -6,10 +6,14 @@ import { ServiceResponse } from '@/common/models/serviceResponse'
 
 export const handleServiceResponse = (
 	//eslint-disable-next-line
-	serviceResponse: ServiceResponse<any>,
+	serviceResponse: ServiceResponse<any> | Buffer,
 	response: Response,
 ) => {
-	return response.status(serviceResponse.statusCode).send(serviceResponse)
+	if (serviceResponse instanceof Buffer) {
+		return response.status(StatusCodes.OK).setHeader('Content-Type', 'image/jpeg').send(serviceResponse)
+	} else if (serviceResponse instanceof ServiceResponse) {
+		return response.status(serviceResponse.statusCode).json(serviceResponse)
+	}
 }
 
 export const validateRequest = (schema: ZodSchema) => (req: Request, res: Response, next: NextFunction) => {

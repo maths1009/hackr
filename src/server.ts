@@ -17,6 +17,7 @@ import { domainsRouter } from './api/domains/router'
 import { fakeIdentityRouter } from './api/fake-identity/router'
 import { logsRouter } from './api/logs/router'
 import { passwordRouter } from './api/password/router'
+import { randomImageRouter } from './api/random-image/router'
 import { ROUTE } from './common/helpers/route'
 
 // ELK
@@ -57,6 +58,7 @@ app.use(ROUTE.LOGS, logsRouter)
 app.use(ROUTE.PASSWORD, passwordRouter)
 app.use(ROUTE.FAKE_IDENTITY, fakeIdentityRouter)
 app.use(ROUTE.DOMAINS, domainsRouter)
+app.use(ROUTE.RANDOM_IMAGE, randomImageRouter)
 
 // Swagger UI
 app.use(openAPIRouter)
