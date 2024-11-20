@@ -5,6 +5,7 @@ export enum ROUTE {
 	LOGS = '/logs',
 	PASSWORD = '/password',
 	FAKE_IDENTITY = '/fake-identity',
+	DOMAINS = '/domains',
 }
 
 export enum AUTH_ROUTE {

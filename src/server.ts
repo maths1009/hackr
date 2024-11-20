@@ -13,6 +13,7 @@ import { Client } from '@elastic/elasticsearch'
 import { PrismaClient } from '@prisma/client'
 
 import { authRouter } from './api/auth/router'
+import { domainsRouter } from './api/domains/router'
 import { fakeIdentityRouter } from './api/fake-identity/router'
 import { logsRouter } from './api/logs/router'
 import { passwordRouter } from './api/password/router'
@@ -55,6 +56,7 @@ app.use(ROUTE.AUTH, authRouter)
 app.use(ROUTE.LOGS, logsRouter)
 app.use(ROUTE.PASSWORD, passwordRouter)
 app.use(ROUTE.FAKE_IDENTITY, fakeIdentityRouter)
+app.use(ROUTE.DOMAINS, domainsRouter)
 
 // Swagger UI
 app.use(openAPIRouter)
