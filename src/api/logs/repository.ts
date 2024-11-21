@@ -8,9 +8,8 @@ export class LogsRepository {
 		userId?: string,
 		request?: string,
 	): Promise<ReturnType<typeof SearchApi>> {
-		console.log(userId, request)
 		return await esClient.search({
-			index: 'pino-logs',
+			index: 'pino-logs-*',
 			body: {
 				query: {
 					bool: {

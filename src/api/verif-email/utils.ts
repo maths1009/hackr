@@ -41,7 +41,6 @@ export const verifyEmailSMTP = (email: string, smtpServer: string): Promise<bool
 
 		socket.on('data', data => {
 			const response = data.toString()
-			console.log(response)
 			if (response.startsWith('250')) {
 				if (currentStep === 3 && response.includes('OK')) {
 					emailValid = true

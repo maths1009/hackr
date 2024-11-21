@@ -4,6 +4,7 @@ import { StatusCodes } from 'http-status-codes'
 import { registerPath } from '@/api-docs/openAPIRegister'
 import { createApiResponses } from '@/api-docs/openAPIResponseBuilders'
 import { ROUTE } from '@/common/helpers/route'
+import requestLogger from '@/common/middleware/requestLogger'
 import { validateRequest } from '@/common/utils/httpHandlers'
 import { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi'
 
@@ -13,7 +14,12 @@ import { GetGenerateImageSchema, QuerriesSchema, ResponseSchema } from './model'
 export const randomImageRegistery = new OpenAPIRegistry()
 export const randomImageRouter: Router = express.Router()
 
-randomImageRouter.get('/', validateRequest(GetGenerateImageSchema), randomImageController.generateRandomImage)
+randomImageRouter.get(
+	'/',
+	requestLogger,
+	validateRequest(GetGenerateImageSchema),
+	randomImageController.generateRandomImage,
+)
 
 randomImageRegistery.registerPath(
 	registerPath({

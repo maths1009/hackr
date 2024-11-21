@@ -12,7 +12,10 @@ export const handleServiceResponse = (
 	if (serviceResponse instanceof Buffer) {
 		return response.status(StatusCodes.OK).setHeader('Content-Type', 'image/jpeg').send(serviceResponse)
 	} else if (serviceResponse instanceof ServiceResponse) {
-		return response.status(serviceResponse.statusCode).json(serviceResponse)
+		return response
+			.status(serviceResponse.statusCode)
+			.setHeader('Content-Type', 'application/json')
+			.send(serviceResponse)
 	}
 }
 

@@ -4,6 +4,7 @@ import { StatusCodes } from 'http-status-codes'
 import { registerPath } from '@/api-docs/openAPIRegister'
 import { createApiResponses } from '@/api-docs/openAPIResponseBuilders'
 import { ROUTE } from '@/common/helpers/route'
+import requestLogger from '@/common/middleware/requestLogger'
 import { validateRequest } from '@/common/utils/httpHandlers'
 import { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi'
 
@@ -13,7 +14,12 @@ import { PostFakeIdentitySchema, QuerriesSchema, ResponseSchema } from './model'
 export const fakeIdentityRegistery = new OpenAPIRegistry()
 export const fakeIdentityRouter: Router = express.Router()
 
-fakeIdentityRouter.get('/', validateRequest(PostFakeIdentitySchema), fakeIdentityController.generateFakeIdentity)
+fakeIdentityRouter.get(
+	'/',
+	requestLogger,
+	validateRequest(PostFakeIdentitySchema),
+	fakeIdentityController.generateFakeIdentity,
+)
 
 fakeIdentityRegistery.registerPath(
 	registerPath({

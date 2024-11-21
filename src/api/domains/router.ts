@@ -4,6 +4,7 @@ import { StatusCodes } from 'http-status-codes'
 import { registerPath } from '@/api-docs/openAPIRegister'
 import { createApiResponses } from '@/api-docs/openAPIResponseBuilders'
 import { ROUTE } from '@/common/helpers/route'
+import requestLogger from '@/common/middleware/requestLogger'
 import { validateRequest } from '@/common/utils/httpHandlers'
 import { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi'
 
@@ -13,7 +14,7 @@ import { PostDomainsSchema, QuerriesSchema, ResponseSchema } from './model'
 export const domainsRegistery = new OpenAPIRegistry()
 export const domainsRouter: Router = express.Router()
 
-domainsRouter.get('/', validateRequest(PostDomainsSchema), domainsController.generateDomains)
+domainsRouter.get('/', requestLogger, validateRequest(PostDomainsSchema), domainsController.generateDomains)
 
 domainsRegistery.registerPath(
 	registerPath({

@@ -4,6 +4,7 @@ import { StatusCodes } from 'http-status-codes'
 import { registerPath } from '@/api-docs/openAPIRegister'
 import { createApiResponses } from '@/api-docs/openAPIResponseBuilders'
 import { ROUTE } from '@/common/helpers/route'
+import requestLogger from '@/common/middleware/requestLogger'
 import { validateRequest } from '@/common/utils/httpHandlers'
 import { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi'
 
@@ -14,7 +15,7 @@ export const passwordRegistery = new OpenAPIRegistry()
 export const passwordRouter: Router = express.Router()
 
 //@ts-expect-error Type mismatch between PostPasswordSchema and expected schema
-passwordRouter.get('/', validateRequest(PostPasswordSchema), passwordController.generatePassword)
+passwordRouter.get('/', requestLogger, validateRequest(PostPasswordSchema), passwordController.generatePassword)
 
 passwordRegistery.registerPath(
 	registerPath({
