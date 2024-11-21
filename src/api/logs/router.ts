@@ -33,6 +33,5 @@ logsRegistry.registerPath(
 				{ description: 'Internal server error', statusCode: StatusCodes.INTERNAL_SERVER_ERROR },
 			]),
 		},
-		protectedRoute: true,
 	}),
 )

@@ -4,8 +4,10 @@ import { StatusCodes } from 'http-status-codes'
 import { registerPath } from '@/api-docs/openAPIRegister'
 import { createApiResponses } from '@/api-docs/openAPIResponseBuilders'
 import { ROUTE } from '@/common/helpers/route'
+import authMiddleware from '@/common/middleware/auth'
 import requestLogger from '@/common/middleware/requestLogger'
 import { validateRequest } from '@/common/utils/httpHandlers'
+import { ROLE } from '@/types'
 import { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi'
 
 import { randomImageController } from './controller'
@@ -17,6 +19,7 @@ export const randomImageRouter: Router = express.Router()
 randomImageRouter.get(
 	'/',
 	requestLogger,
+	authMiddleware(ROLE.USER),
 	validateRequest(GetGenerateImageSchema),
 	randomImageController.generateRandomImage,
 )
@@ -36,6 +39,6 @@ randomImageRegistery.registerPath(
 				{ description: 'Internal server error', statusCode: StatusCodes.INTERNAL_SERVER_ERROR },
 			]),
 		},
-		protectedRoute: false,
+		protectedRoute: true,
 	}),
 )
