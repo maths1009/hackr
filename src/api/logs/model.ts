@@ -33,15 +33,13 @@ export const QuerriesSchema = z
 
 export type Response = z.infer<typeof ResponseSchema>
 export const ResponseSchema = z.array(
-	z.object({
-		hostname: z.string(),
-		time: z.string(),
-		request: z.object({
+	z
+		.object({
 			method: z.string(),
 			url: z.string(),
-		}),
-		response: ServiceResponseSchema(),
-	}),
+			responseTime: z.string().optional(),
+		})
+		.merge(ServiceResponseSchema()),
 )
 
 export const PostLogsSchema = z.object({
@@ -50,17 +48,17 @@ export const PostLogsSchema = z.object({
 
 export interface LogDocument {
 	_source: {
-		hostname: string
-		time: string
-		request: {
+		'@timestamp': string
+		message: string
+		severity: string
+		fields: {
+			requestId: string
 			method: string
 			url: string
-		}
-		response: {
-			success: boolean
-			message: string
 			statusCode: number
-			responseObject: unknown
+			userId: number
+			responseTime?: string
+			responseBody: string
 		}
 	}
 }
