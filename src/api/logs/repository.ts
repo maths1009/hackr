@@ -9,7 +9,7 @@ export class LogsRepository {
 		request?: string,
 	): Promise<ReturnType<typeof SearchApi>> {
 		return await esClient.search({
-			index: 'pino-logs-*',
+			index: 'webservice-logs-*',
 			size: 10,
 			body: {
 				query: {

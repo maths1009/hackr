@@ -32,7 +32,7 @@ const esClient = new Client({ node: env.ELK_HOST })
 const esTransportOptions: ElasticsearchTransportOptions = {
 	level: 'info',
 	clientOpts: { node: env.ELK_HOST },
-	indexPrefix: 'pino-logs',
+	indexPrefix: 'webservice-logs',
 }
 const esTransport = new ElasticsearchTransport(esTransportOptions)
 

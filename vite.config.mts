@@ -5,6 +5,7 @@ export default defineConfig({
 	test: {
 		coverage: {
 			exclude: ['**/node_modules/**', '**/index.ts'],
+			provider: 'istanbul',
 		},
 		globals: true,
 		restoreMocks: true,
