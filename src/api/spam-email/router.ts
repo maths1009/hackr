@@ -11,27 +11,27 @@ import { ROLE } from '@/types'
 import { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi'
 
 import { spamEmailController } from './controller'
-import { GetSpamEmailSchema, QuerriesSchema, ResponseSchema } from './model'
+import { BodySchema, PostSpamEmailSchema, ResponseSchema } from './model'
 
 export const spamEmailRegistery = new OpenAPIRegistry()
 export const spamEmailRouter: Router = express.Router()
 
-spamEmailRouter.get(
+spamEmailRouter.post(
 	'/',
 	requestLogger,
 	authMiddleware(ROLE.USER),
-	validateRequest(GetSpamEmailSchema),
+	validateRequest(PostSpamEmailSchema),
 	spamEmailController.spam,
 )
 
 spamEmailRegistery.registerPath(
 	registerPath({
 		config: {
-			method: 'get',
+			method: 'post',
 			path: ROUTE.SPAM_EMAIL,
 			tags: ['Spam Email'],
 			request: {
-				params: QuerriesSchema,
+				params: BodySchema,
 			},
 			responses: createApiResponses([
 				{ description: 'x emails send', schema: ResponseSchema },

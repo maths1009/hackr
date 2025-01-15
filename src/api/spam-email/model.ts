@@ -5,8 +5,8 @@ import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi'
 
 extendZodWithOpenApi(z)
 
-export type Querries = z.infer<typeof QuerriesSchema>
-export const QuerriesSchema = z.object({
+export type Body = z.infer<typeof BodySchema>
+export const BodySchema = z.object({
 	to: z.string().email(),
 	count: validNumber('count'),
 	subject: z.string().min(1).optional(),
@@ -27,6 +27,6 @@ export const ResponseSchema = z.array(
 	]),
 )
 
-export const GetSpamEmailSchema = z.object({
-	query: QuerriesSchema,
+export const PostSpamEmailSchema = z.object({
+	body: BodySchema,
 })

@@ -2,19 +2,16 @@ import { Request, RequestHandler, Response } from 'express'
 
 import { handleServiceResponse } from '@/common/utils/httpHandlers'
 
-import { Querries } from './model'
+import { Body } from './model'
 import { spamEmailService } from './service'
 
 class SpamEmailController {
-	public spam: RequestHandler<object, object, object, Querries> = async (
-		req: Request<object, object, object, Querries>,
-		res: Response,
-	) => {
+	public spam: RequestHandler<object, object, Body> = async (req: Request<object, object, Body>, res: Response) => {
 		const serviceResponse = await spamEmailService.spam(
-			req.query.to,
-			req.query.count as unknown as number,
-			req.query.subject,
-			req.query.body,
+			req.body.to,
+			req.body.count as unknown as number,
+			req.body.subject,
+			req.body.body,
 		)
 		return handleServiceResponse(serviceResponse, res)
 	}

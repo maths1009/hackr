@@ -5,8 +5,8 @@ import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi'
 
 extendZodWithOpenApi(z)
 
-export type Querries = z.infer<typeof QuerriesSchema>
-export const QuerriesSchema = z.object({
+export type Body = z.infer<typeof BodySchema>
+export const BodySchema = z.object({
 	target: z.string().min(1),
 	count: validNumber('count'),
 })
@@ -23,6 +23,6 @@ export const ResponseSchema = z.array(
 	]),
 )
 
-export const GetDDosSchema = z.object({
-	query: QuerriesSchema,
+export const PostDDosSchema = z.object({
+	body: BodySchema,
 })

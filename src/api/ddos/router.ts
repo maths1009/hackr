@@ -1,6 +1,7 @@
 import express, { type Router } from 'express'
 import { StatusCodes } from 'http-status-codes'
 
+import { createApiBody } from '@/api-docs/openAPIBodyBuilders'
 import { registerPath } from '@/api-docs/openAPIRegister'
 import { createApiResponses } from '@/api-docs/openAPIResponseBuilders'
 import { ROUTE } from '@/common/helpers/route'
@@ -11,21 +12,21 @@ import { ROLE } from '@/types'
 import { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi'
 
 import { ddosController } from './controller'
-import { GetDDosSchema, QuerriesSchema, ResponseSchema } from './model'
+import { BodySchema, PostDDosSchema, ResponseSchema } from './model'
 
 export const ddosRegistery = new OpenAPIRegistry()
 export const ddosRouter: Router = express.Router()
 
-ddosRouter.get('/', requestLogger, authMiddleware(ROLE.USER), validateRequest(GetDDosSchema), ddosController.ddos)
+ddosRouter.post('/', requestLogger, authMiddleware(ROLE.USER), validateRequest(PostDDosSchema), ddosController.ddos)
 
 ddosRegistery.registerPath(
 	registerPath({
 		config: {
-			method: 'get',
+			method: 'post',
 			path: ROUTE.DDOS,
 			tags: ['DDoS'],
 			request: {
-				params: QuerriesSchema,
+				body: createApiBody(BodySchema),
 			},
 			responses: createApiResponses([
 				{ description: 'x requests send', schema: ResponseSchema },
