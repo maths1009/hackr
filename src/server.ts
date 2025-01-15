@@ -20,6 +20,7 @@ import { logsRouter } from './api/logs/router'
 import { passwordRouter } from './api/password/router'
 import { randomImageRouter } from './api/random-image/router'
 import { spamEmailRouter } from './api/spam-email/router'
+import { usersRouter } from './api/users/router'
 import { verifEmailRouter } from './api/verif-email/router'
 import { verifPasswordRouter } from './api/verif-password/router'
 import { ROUTE } from './common/helpers/route'
@@ -71,6 +72,7 @@ app.use(ROUTE.VERIF_PASSWORD, verifPasswordRouter)
 app.use(ROUTE.DDOS, ddosRouter)
 app.use(ROUTE.SPAM_EMAIL, spamEmailRouter)
 app.use(ROUTE.CRAWLER, crawlerRouter)
+app.use(ROUTE.USERS, usersRouter)
 
 // Swagger UI
 app.use(openAPIRouter)
