@@ -1,4 +1,5 @@
 import { authRegistry } from '@/api/auth/router'
+import { ddosRegistery } from '@/api/ddos/router'
 import { domainsRegistery } from '@/api/domains/router'
 import { fakeIdentityRegistery } from '@/api/fake-identity/router'
 import { logsRegistry } from '@/api/logs/router'
@@ -18,6 +19,7 @@ export const generateOpenAPIDocument = () => {
 		randomImageRegistery,
 		verifEmailRegistery,
 		verifPasswordRegistery,
+		ddosRegistery,
 	])
 	const generator = new OpenApiGeneratorV3(registry.definitions)
 

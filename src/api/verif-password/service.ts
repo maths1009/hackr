@@ -13,7 +13,6 @@ export class VerifPasswordService {
 			return ServiceResponse.success<Response>('Verification ok', isPassword)
 		} catch (error) {
 			const err = error as Error
-			console.log(err)
 			switch (err.message) {
 				default:
 					return ServiceResponse.failure('Internal server error', null, StatusCodes.INTERNAL_SERVER_ERROR)

@@ -9,6 +9,7 @@ export enum ROUTE {
 	RANDOM_IMAGE = '/random-image',
 	VERIF_EMAIL = '/verif-email',
 	VERIF_PASSWORD = '/verif-password',
+	DDOS = '/ddos',
 }
 
 export enum AUTH_ROUTE {
