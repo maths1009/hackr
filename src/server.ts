@@ -12,6 +12,7 @@ import { Client } from '@elastic/elasticsearch'
 import { PrismaClient } from '@prisma/client'
 
 import { authRouter } from './api/auth/router'
+import { crawlerRouter } from './api/crawler/router'
 import { ddosRouter } from './api/ddos/router'
 import { domainsRouter } from './api/domains/router'
 import { fakeIdentityRouter } from './api/fake-identity/router'
@@ -69,6 +70,7 @@ app.use(ROUTE.VERIF_EMAIL, verifEmailRouter)
 app.use(ROUTE.VERIF_PASSWORD, verifPasswordRouter)
 app.use(ROUTE.DDOS, ddosRouter)
 app.use(ROUTE.SPAM_EMAIL, spamEmailRouter)
+app.use(ROUTE.CRAWLER, crawlerRouter)
 
 // Swagger UI
 app.use(openAPIRouter)

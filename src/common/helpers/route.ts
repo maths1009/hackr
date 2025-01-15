@@ -11,6 +11,7 @@ export enum ROUTE {
 	VERIF_PASSWORD = '/verif-password',
 	DDOS = '/ddos',
 	SPAM_EMAIL = '/spam-email',
+	CRAWLER = '/crawler',
 }
 
 export enum AUTH_ROUTE {
