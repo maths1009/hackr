@@ -27,17 +27,32 @@ export const generateOpenAPIDocument = () => {
 		crawlerRegistery,
 		usersRegistery,
 	])
+
 	const generator = new OpenApiGeneratorV3(registry.definitions)
 
-	return generator.generateDocument({
+	const document = generator.generateDocument({
 		openapi: '3.0.0',
 		info: {
 			version: '1.0.0',
 			title: 'Swagger API',
 		},
+		security: [{ bearerAuth: [] }],
 		externalDocs: {
 			description: 'View the raw OpenAPI Specification in JSON format',
 			url: '/swagger.json',
 		},
 	})
+
+	return {
+		...document,
+		components: {
+			securitySchemes: {
+				bearerAuth: {
+					type: 'http',
+					scheme: 'bearer',
+					bearerFormat: 'JWT',
+				},
+			},
+		},
+	}
 }
