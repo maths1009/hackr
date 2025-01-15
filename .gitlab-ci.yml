@@ -20,7 +20,7 @@ install_dependencies:
   stage: install
   script:
     - echo "📦 Installing dependencies..."
-    - npm ci --prefer-offline --no-audit --no-progress
+    - npm i --prefer-offline --no-audit --no-progress
   artifacts:
     paths:
       - node_modules/
