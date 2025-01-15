@@ -10,14 +10,15 @@ services:
     container_name: mariadb_container
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: test
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
       - '3306:3306'
     volumes:
       - mariadb_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     networks:
       - db
 
@@ -26,9 +27,9 @@ services:
     container_name: phpmyadmin_container
     restart: always
     environment:
-      PMA_HOST: mariadb
-      PMA_PORT: 3306
-      MYSQL_ROOT_PASSWORD: root
+      PMA_HOST: ${PMA_HOST}
+      PMA_PORT: ${PMA_PORT}
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
     ports:
       - '8080:80'
     networks:
@@ -41,6 +42,7 @@ services:
       - discovery.type=single-node
       - bootstrap.memory_lock=true
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - xpack.security.enabled=false
     ulimits:
       memlock:
         soft: -1
@@ -49,20 +51,9 @@ services:
       - '9200:9200'
     networks:
       - elk
-
-  kibana:
-    image: docker.elastic.co/kibana/kibana:7.17.6
-    container_name: kibana
-    ports:
-      - '5601:5601'
-    environment:
-      ELASTICSEARCH_URL: http://elasticsearch:9200
-    depends_on:
-      - elasticsearch
-    networks:
-      - elk
+    volumes:
+      - elk:/usr/share/elasticsearch/data
 
 volumes:
   elk:
-    driver: bridge
   mariadb_data:

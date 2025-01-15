@@ -1,141 +1,224 @@
-
 # 🛠️ HackR - API de Hacking
 
 Bienvenue dans le projet **HackR**, une API qui met à disposition des outils de hacking pour l'éducation et la démonstration de tests de sécurité. Ce projet est développé avec TypeScript et Express, et inclut plusieurs fonctionnalités de hacking ainsi que des mesures de sécurité intégrées.
 
-## 📑 Sommaire
-- [Fonctionnalités](#fonctionnalités)
-- [Technologies Utilisées](#technologies-utilisées)
-- [Pré-requis](#pré-requis)
-- [Installation](#installation)
-- [Base de données](#base-de-données)
-- [Scripts Disponibles](#scripts-disponibles)
-- [Structure du Projet](#structure-du-projet)
-- [Swagger Documentation](#swagger-documentation)
-- [Utilisation](#utilisation)
-- [Contribution](#contribution)
-- [Licence](#licence)
+## 📋 Table des Matières
 
-## 🎯 Fonctionnalités
-L'API HackR offre les fonctionnalités suivantes :
-- 🔍 **Vérification d'existence d'une adresse mail**
-- ✉️ **Spammer de mail** (contenu + nombre d'envoi)
-- 🎣 **Service de phishing** (création d'une page web sur mesure avec IA)
-- 🔒 **Vérification de la sécurité de mots de passe** (comparaison avec les mots de passe les plus courants)
-- 🌐 **Récupération de domaines et sous-domaines** associés à un Nom De Domaine
-- 🛡️ **DDoS**
-- 🖼️ **Changement d'image aléatoire** via une API tierce
-- 📇 **Génération d'identité fictive**
-- 🕵️ **Crawler d'information** sur une personne (à partir d'un nom/prénom)
-- 🔑 **Générateur de mots de passe sécurisé**
+### 🚀 Démarrage Rapide
+- [Pré-requis](#-pré-requis)
+- [Installation](#-installation)
+- [Configuration](#-configuration)
+- [Démarrage](#-démarrage)
 
-## 🔧 Technologies Utilisées
-Le projet utilise les technologies suivantes :
-- **TypeScript** pour un typage statique sûr.
-- **Express** comme framework backend.
-- **Zod** pour la validation des schémas et la génération de documentation avec @asteasolutions/zod-to-openapi.
-- **Swagger** pour la documentation de l'API.
-- **Vitest** pour les tests.
-- **Husky** pour les hooks Git.
-- **dotenv** pour la gestion des variables d'environnement.
-- **pino** pour le logging.
-- **helmet** pour la sécurité HTTP.
-- **express-rate-limit** pour la limitation de débit.
-- **prisma** pour l'ORM et la gestion de la base de données.
+### 💻 Architecture & Développement
+- [Technologies Utilisées](#-technologies-utilisées)
+- [Base de données](#-base-de-données)
+- [Monitoring & Logs](#-monitoring-et-logs)
 
-## 📝 Pré-requis
+### 📚 Documentation
+- [Documentation API](#-documentation-api)
+
+### 🔧 Qualité & Tests
+- [Validation des Données](#-validation-des-données)
+- [Tests Unitaires](#-tests)
+- [Linting & Formatage](#-linting-et-formatage)
+- [Hooks Git](#-hooks-git)
+
+### 🔄 CI/CD & Déploiement
+- [Pipeline GitLab CI/CD](#-intégration-continue)
+- [Environnements](#-environnements)
+
+### 🛟 Support
+- [Troubleshooting](#-troubleshooting)
+- [FAQ](#-faq)
+- [Arrêt des Services](#-arrêt-des-services)
+
+## 🚀 Démarrage Rapide
+
+### 📋 Pré-requis
+
 Avant de commencer, assurez-vous d'avoir installé :
 - **Node.js** (>= 22.9.0)
 - **npm** (>= 10.8.2)
+- **Docker** et **Docker Compose**
 
-## 🚀 Installation
-### 1. Cloner le dépôt
+#### Installation de Docker
+
+1. **Windows** :
+   - Téléchargez [Docker Desktop pour Windows](https://docs.docker.com/desktop/install/windows-install/)
+   - Suivez l'assistant d'installation
+   - Activez WSL 2 si demandé
+
+2. **macOS** :
+   - Téléchargez [Docker Desktop pour Mac](https://docs.docker.com/desktop/install/mac-install/)
+   - Déplacez Docker dans votre dossier Applications
+   - Lancez Docker et suivez les instructions
+
+3. **Linux** :
+```bash
+# Debian/Ubuntu
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo usermod -aG docker $USER
+
+# Vérifiez l'installation
+docker --version
+docker-compose --version
+```
+
+### 🔧 Installation
+
+1. **Cloner le dépôt**
 ```bash
 git clone https://gitlab.com/api347245/hackr.git
 cd hackr
 ```
 
-### 2. Installer les dépendances
+2. **Installer les dépendances**
 ```bash
 npm install
 ```
 
-### 3. Configuration de l'environnement
-Renommez le fichier `.env.template` à la racine du projet en `.env` et configurez les variables d'environnement nécessaires :
+### ⚙️ Configuration
+
+**Configuration de l'environnement**
 ```bash
 mv .env.sample .env
 ```
 
-### 4. Compilation et Démarrage
-- En mode développement :
-```bash
-npm run dev
-```
+### 🏃 Démarrage
 
-- Pour une version de production :
 ```bash
+# En développement - démarrage automatique avec Docker
+npm run dev
+
+# En production
 npm run build
 npm start
 ```
 
-### 5. Base de Données
-Pour utiliser la base de données, vous devez configurer les variables d'environnement suivantes :
-```bash
-DATABASE_URL="mysql://USER:PASSWORD@HOST:PORT/DATABASE"
+## 💻 Architecture & Développement
+
+### 🛠️ Technologies Utilisées
+
+- **Backend** :
+  - TypeScript
+  - Express.js
+  - Node.js
+- **Base de données** :
+  - MariaDB
+  - Prisma
+- **Documentation** :
+  - OpenAPI (Swagger)
+  - @asteasolutions/zod-to-openapi
+- **Tests & Qualité** :
+  - Vitest
+  - ESLint
+  - Prettier
+  - Husky
+
+### 💾 Base de Données
+
+Le projet utilise **MariaDB** comme système de gestion de base de données :
+
+- Base de données automatiquement initialisée au démarrage
+- Interface **phpMyAdmin** disponible :
+  - URL : `http://localhost:8080`
+  - Identifiants : définis dans le fichier `.env`
+
+### 📊 Monitoring et Logs
+
+Stack ELK pré-configuré :
+- Collecte automatique des logs
+- Dashboard Kibana personnalisé
+- Alertes configurables
+
+## 📚 Documentation
+
+### 📖 Documentation API
+
+La documentation complète de l'API est disponible via Swagger UI :
+- URL : `http://localhost:3000/api-docs`
+- Documentation générée automatiquement via zod-to-openapi
+- Interface interactive pour tester les endpoints
+
+## 🔧 Qualité & Tests
+
+### ✅ Validation des Données
+
+Utilisation de **Zod** pour la validation :
+```typescript
+const userSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8),
+});
 ```
 
-Demarer la base de données avec Docker :
+### 🧪 Tests
+
+Tests unitaires avec **Vitest** :
 ```bash
-npm run db:start
+# Lancer les tests
+npm run test
+
+# Avec couverture
+npm run test:coverage
 ```
 
-Executer une premiere requête pour initialiser les logs
+### 🎨 Linting et Formatage
 
-Aller sur ce lien http://localhost:5601/app/management/kibana/indexPatterns pour créer un nouvelle index, cliquer sur le lien pour créer un index 
+Outils de qualité de code :
+- ESLint
+- Prettier
+- TypeScript
+- Sheriff
 
-Donner lui un nom puis rentrer ceci dans Custom index pattern ID
-```pino-logs```
-Selectionner un Timestamp field puis créer votre key, une fois fait créer votre vue pour voir vos logs
+### 🪝 Hooks Git
 
-
-## 📦 Base de Données
-### Utilisation de Docker pour le Développement Local
-
-Pour faciliter le développement local, vous pouvez utiliser Docker et `docker-compose`. Voici les étapes à suivre :
-
-### 1. Démarrer les services de Base de Données
+Vérifications automatiques avec Husky :
 ```bash
-npm run db:start
+# Pré-commit hooks
+npm run lint
+npm run format
+npm run typecheck
+npm run sherif
 ```
 
-### 2. Arrêter les services de Base de Données
+## 🔄 Intégration Continue
+
+### 🔄 Pipeline GitLab CI/CD
+
+Étapes automatisées :
+1. Installation
+2. Lint & Format
+3. Tests
+4. Build
+5. Déploiement
+
+### 🌍 Environnements
+
+- **Development** : `develop` branch
+- **Production** : `main` branch
+
+## 🛟 Support
+
+### ❓ Troubleshooting
+
+Solutions aux problèmes courants :
+- Erreurs de démarrage
+- Problèmes de connexion
+- Erreurs de build
+
+### 📋 FAQ
+
+Questions fréquemment posées et leurs réponses.
+
+### 🛑 Arrêt des Services
+
 ```bash
+# Arrêter l'application
+Ctrl+C
+
+# Arrêter et supprimer les conteneurs Docker
 npm run db:stop
 ```
-
-
-
-## 📜 Scripts Disponibles
-Le `package.json` définit plusieurs scripts pour faciliter le développement et le déploiement de l'API :
-- **`npm run dev`** : Démarrer l'application en mode développement avec rechargement automatique.
-- **`npm run build`** : Compiler le projet TypeScript en JavaScript.
-- **`npm run bd:start`** : Démarrer la base de données PostgreSQL avec Docker.
-- **`npm run bd:stop`** : Arrêter la base de données PostgreSQL avec Docker.
-- **`npm start`** : Démarrer l'application compilée en mode production.
-- **`npm run lint`** : Lancer l'analyse du code avec ESLint.
-- **`npm run lint:fix`** : Corriger automatiquement les erreurs ESLint.
-- **`npm run format`** : Formater le code avec Prettier.
-- **`npm run test`** : Exécuter les tests unitaires avec Vitest.
-- **`npm run clean`** : Supprimer les fichiers de compilation et de couverture de test.
-
-## 📖 Swagger Documentation
-Pour consulter la documentation interactive de l'API, démarrez le projet et accédez à :
-```
-http://localhost:3000/api-docs
-```
-
-## 🚀 Utilisation
-### Routes Disponibles
-L'API expose plusieurs routes, par exemple :
-- **POST /auth/login** : Connexion et récupération de JWT.
-- **POST /auth/register** : Inscription d'un nouvel utilisateur.

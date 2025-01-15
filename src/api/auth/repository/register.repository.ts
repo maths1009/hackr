@@ -1,3 +1,5 @@
+import dayjs from 'dayjs'
+
 import { generateToken, hashPassword } from '@/common/utils/auth'
 import { prisma } from '@/server'
 import { ROLE } from '@/types'
@@ -18,7 +20,7 @@ export class RegisterRepository {
 			data: {
 				email,
 				name,
-				createdAt: new Date().toISOString(),
+				createdAt: dayjs().toISOString(),
 				password: await hashPassword(password),
 				id_roles: findRole.id,
 			},

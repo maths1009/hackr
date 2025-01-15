@@ -20,18 +20,21 @@ export class LogsService {
 				querries.userId?.toString(),
 				querries.request,
 			)
+
 			const transformedLogs: Response = logs.hits.hits.map(l => {
 				const log = (l as LogDocument)._source
 				return {
-					hostname: log.hostname,
-					time: log.time,
-					request: log.request,
-					response: log.response,
+					method: log.fields.method,
+					url: log.fields.url,
+					responseTime: log.fields.responseTime,
+					...JSON.parse(log.fields.responseBody),
 				}
 			})
+
 			return ServiceResponse.success<Response>('Logs retrieved', transformedLogs)
 		} catch (error) {
 			const err = error as Error
+
 			switch (err.message) {
 				default:
 					return ServiceResponse.failure('Internal server error', null, StatusCodes.INTERNAL_SERVER_ERROR)

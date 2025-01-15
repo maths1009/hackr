@@ -5,7 +5,8 @@ import { createApiBody } from '@/api-docs/openAPIBodyBuilders'
 import { registerPath } from '@/api-docs/openAPIRegister'
 import { createApiResponses } from '@/api-docs/openAPIResponseBuilders'
 import { AUTH_ROUTE, ROUTE } from '@/common/helpers/route'
-import { authMiddleware } from '@/common/middleware/authMiddleware'
+import authMiddleware from '@/common/middleware/auth'
+import requestLogger from '@/common/middleware/requestLogger'
 import { validateRequest } from '@/common/utils/httpHandlers'
 import { ROLE } from '@/types'
 import { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi'
@@ -40,6 +41,7 @@ authRegistry.registerPath(
 authRouter.post(
 	ROUTE.REGISTER,
 	authMiddleware(ROLE.ADMIN),
+	requestLogger,
 	validateRequest(PostRegisterSchema),
 	registerController.register,
 )

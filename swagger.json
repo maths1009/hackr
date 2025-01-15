@@ -1,0 +1,1261 @@
+{
+	"openapi": "3.0.0",
+	"info": { "version": "1.0.0", "title": "Swagger API" },
+	"externalDocs": { "description": "View the raw OpenAPI Specification in JSON format", "url": "/swagger.json" },
+	"components": { "schemas": {}, "parameters": {} },
+	"paths": {
+		"/auth/login": {
+			"post": {
+				"tags": ["Auth"],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": { "email": { "type": "string", "format": "email" }, "password": { "type": "string" } },
+								"required": ["email", "password"]
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" },
+										"responseObject": {
+											"type": "object",
+											"properties": { "token": { "type": "string" } },
+											"required": ["token"]
+										}
+									},
+									"required": ["success", "message", "statusCode", "responseObject"]
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Invalid email or password",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Invalid body",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/auth/register": {
+			"post": {
+				"tags": ["Auth"],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"name": { "type": "string" },
+									"email": { "type": "string", "format": "email" },
+									"password": { "type": "string" },
+									"role": { "type": "string", "enum": ["ADMIN", "USER"] }
+								},
+								"required": ["name", "email", "password", "role"]
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" },
+										"responseObject": {
+											"type": "object",
+											"properties": { "token": { "type": "string" } },
+											"required": ["token"]
+										}
+									},
+									"required": ["success", "message", "statusCode", "responseObject"]
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid role",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Authorization header missing or Invalid token",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "User already exists",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Invalid body",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/logs": {
+			"get": {
+				"tags": ["Logs"],
+				"parameters": [
+					{ "schema": { "type": "string" }, "required": true, "name": "startDate", "in": "query" },
+					{ "schema": { "type": "string" }, "required": true, "name": "endDate", "in": "query" },
+					{ "schema": { "type": "string" }, "required": false, "name": "userId", "in": "query" },
+					{
+						"schema": {
+							"type": "string",
+							"enum": [
+								"auth",
+								"login",
+								"register",
+								"logs",
+								"password",
+								"fake-identity",
+								"domains",
+								"random-image",
+								"verif-email",
+								"verif-password",
+								"ddos",
+								"spam-email",
+								"crawler",
+								"users",
+								"users/:id"
+							]
+						},
+						"required": false,
+						"name": "request",
+						"in": "query"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" },
+										"responseObject": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {
+													"method": { "type": "string" },
+													"url": { "type": "string" },
+													"responseTime": { "type": "string" },
+													"success": { "type": "boolean" },
+													"message": { "type": "string" },
+													"statusCode": { "type": "number" }
+												},
+												"required": ["method", "url", "success", "message", "statusCode"]
+											}
+										}
+									},
+									"required": ["success", "message", "statusCode", "responseObject"]
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Invalid querries params",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/password": {
+			"get": {
+				"tags": ["Password"],
+				"parameters": [
+					{
+						"schema": { "type": "integer", "maximum": 1000, "minimum": 1 },
+						"required": true,
+						"name": "length",
+						"in": "path"
+					},
+					{
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string",
+								"enum": ["numbers", "lowercase", "uppercase", "symbols", "similarCharacters"]
+							}
+						},
+						"required": true,
+						"name": "caractereParams",
+						"in": "path"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Password generated",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" },
+										"responseObject": { "type": "string" }
+									},
+									"required": ["success", "message", "statusCode", "responseObject"]
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Authorization header missing or Invalid token",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Invalid querry params",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/fake-identity": {
+			"get": {
+				"tags": ["Fake identity"],
+				"parameters": [
+					{
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string",
+								"enum": ["firstName", "lastName", "email", "phone", "address", "company", "job", "birthday", "age"]
+							}
+						},
+						"required": true,
+						"name": "params",
+						"in": "path"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Fake identity generated",
+						"content": { "image/jpeg": { "schema": { "type": "string", "format": "binary" } } }
+					},
+					"401": {
+						"description": "Authorization header missing or Invalid token",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Invalid querry params",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/domains": {
+			"get": {
+				"tags": ["Domains"],
+				"parameters": [{ "schema": { "type": "string" }, "required": true, "name": "name", "in": "path" }],
+				"responses": {
+					"200": {
+						"description": "Domains found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" },
+										"responseObject": { "type": "array", "items": { "type": "string" } }
+									},
+									"required": ["success", "message", "statusCode", "responseObject"]
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Authorization header missing or Invalid token",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Invalid querry params",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/random-image": {
+			"get": {
+				"tags": ["Random Image"],
+				"parameters": [
+					{ "schema": { "type": "string" }, "required": false, "name": "width", "in": "path" },
+					{ "schema": { "type": "string" }, "required": false, "name": "height", "in": "path" }
+				],
+				"responses": {
+					"200": {
+						"description": "Random Image generated",
+						"content": { "image/jpeg": { "schema": { "type": "string", "format": "binary" } } }
+					},
+					"401": {
+						"description": "Authorization header missing or Invalid token",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Invalid querry params",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/verif-email": {
+			"get": {
+				"tags": ["Verif email"],
+				"parameters": [
+					{ "schema": { "type": "string", "format": "email" }, "required": true, "name": "email", "in": "path" }
+				],
+				"responses": {
+					"200": {
+						"description": "Verification ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" },
+										"responseObject": { "type": "boolean" }
+									},
+									"required": ["success", "message", "statusCode", "responseObject"]
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Authorization header missing or Invalid token",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Invalid querry params",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/verif-password": {
+			"get": {
+				"tags": ["Verif password"],
+				"parameters": [{ "schema": { "type": "string" }, "required": true, "name": "password", "in": "path" }],
+				"responses": {
+					"200": {
+						"description": "Verification ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" },
+										"responseObject": { "type": "boolean" }
+									},
+									"required": ["success", "message", "statusCode", "responseObject"]
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Authorization header missing or Invalid token",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Invalid querry params",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/ddos": {
+			"post": {
+				"tags": ["DDoS"],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": { "target": { "type": "string", "minLength": 1 }, "count": { "type": "string" } },
+								"required": ["target", "count"]
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "x requests send",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" },
+										"responseObject": {
+											"type": "array",
+											"items": {
+												"anyOf": [
+													{
+														"type": "object",
+														"properties": { "status": { "type": "number" } },
+														"required": ["status"]
+													},
+													{ "type": "object", "properties": { "error": { "nullable": true } } }
+												]
+											}
+										}
+									},
+									"required": ["success", "message", "statusCode", "responseObject"]
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Target is not reachable",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Authorization header missing or Invalid token",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Invalid querry params",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/spam-email": {
+			"post": {
+				"tags": ["Spam Email"],
+				"parameters": [
+					{ "schema": { "type": "string", "format": "email" }, "required": true, "name": "to", "in": "path" },
+					{ "schema": { "type": "string" }, "required": true, "name": "count", "in": "path" },
+					{ "schema": { "type": "string", "minLength": 1 }, "required": false, "name": "subject", "in": "path" },
+					{ "schema": { "type": "string", "minLength": 1 }, "required": false, "name": "body", "in": "path" }
+				],
+				"responses": {
+					"200": {
+						"description": "x emails send",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" },
+										"responseObject": {
+											"type": "array",
+											"items": {
+												"anyOf": [
+													{
+														"type": "object",
+														"properties": { "success": { "type": "boolean" }, "data": { "nullable": true } },
+														"required": ["success"]
+													},
+													{
+														"type": "object",
+														"properties": { "success": { "type": "boolean" }, "error": { "nullable": true } },
+														"required": ["success"]
+													}
+												]
+											}
+										}
+									},
+									"required": ["success", "message", "statusCode", "responseObject"]
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Authorization header missing or Invalid token",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Invalid querry params",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/crawler": {
+			"get": {
+				"tags": ["Crawler"],
+				"parameters": [{ "schema": { "type": "string", "minLength": 1 }, "required": true, "name": "q", "in": "path" }],
+				"responses": {
+					"200": {
+						"description": "Verification ok",
+						"content": { "image/jpeg": { "schema": { "type": "string", "format": "binary" } } }
+					},
+					"401": {
+						"description": "Authorization header missing or Invalid token",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Invalid querry params",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/users": {
+			"get": {
+				"tags": ["Users"],
+				"responses": {
+					"200": {
+						"description": "Users found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" },
+										"responseObject": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {
+													"email": { "type": "string", "format": "email" },
+													"createdAt": { "type": "string" },
+													"role": { "type": "string", "enum": ["ADMIN", "USER"] },
+													"name": { "type": "string" }
+												},
+												"required": ["email", "createdAt", "role", "name"]
+											}
+										}
+									},
+									"required": ["success", "message", "statusCode", "responseObject"]
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Authorization header missing or Invalid token",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": { "type": "boolean" },
+										"message": { "type": "string" },
+										"statusCode": { "type": "number" }
+									},
+									"required": ["success", "message", "statusCode"]
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

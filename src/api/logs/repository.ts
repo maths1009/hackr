@@ -8,43 +8,34 @@ export class LogsRepository {
 		userId?: string,
 		request?: string,
 	): Promise<ReturnType<typeof SearchApi>> {
-		console.log(userId, request)
 		return await esClient.search({
-			index: 'pino-logs',
+			index: 'webservice-logs-*',
+			size: 10,
 			body: {
 				query: {
 					bool: {
-						must: [
+						filter: [
 							{
 								range: {
-									time: {
+									'@timestamp': {
 										gte: start,
 										lte: end,
 										format: 'strict_date_optional_time',
 									},
 								},
 							},
-							...(userId
-								? [
-										{
-											term: {
-												userId: userId,
-											},
-										},
-									]
-								: []),
-							...(request
-								? [
-										{
-											prefix: {
-												'request.url': request,
-											},
-										},
-									]
-								: []),
+							...(userId ? [{ term: { 'fields.userId': userId } }] : []),
+							...(request ? [{ match_phrase: { 'fields.url': request } }] : []),
 						],
 					},
 				},
+				sort: [
+					{
+						'@timestamp': {
+							order: 'desc',
+						},
+					},
+				],
 			},
 		})
 	}

@@ -20,7 +20,7 @@ install_dependencies:
   stage: install
   script:
     - echo "📦 Installing dependencies..."
-    - npm ci --prefer-offline --no-audit --no-progress
+    - npm i --prefer-offline --no-audit --no-progress
   artifacts:
     paths:
       - node_modules/
@@ -30,6 +30,8 @@ format-job:
   stage: format
   script:
     - npm run format
+  only:
+    - develop
 
 lint-job:
   stage: lint
@@ -40,6 +42,15 @@ typecheck-job:
   stage: typecheck
   script:
     - npm run typecheck
+  only:
+    - develop
+
+test-job:
+  stage: test
+  script:
+    - npm test
+  only:
+    - develop
 
 build-job:
   stage: build
@@ -49,11 +60,8 @@ build-job:
     paths:
       - dist/
     expire_in: 1h
-
-test-job:
-  stage: test
-  script:
-    - npm test
+  only:
+    - main
 
 deploy-job:
   stage: deploy

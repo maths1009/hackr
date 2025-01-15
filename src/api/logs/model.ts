@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { z } from 'zod'
 
 import { ROUTE } from '@/common/helpers/route'
@@ -20,9 +21,9 @@ export const QuerriesSchema = z
 	})
 	.refine(
 		data => {
-			const startDate = new Date(data.startDate)
-			const endDate = new Date(data.endDate)
-			return startDate <= endDate
+			const startDate = dayjs(data.startDate)
+			const endDate = dayjs(data.endDate)
+			return startDate.isBefore(endDate) || startDate.isSame(endDate)
 		},
 		{
 			message: 'start_date must be before or equal to end_date',
@@ -32,15 +33,13 @@ export const QuerriesSchema = z
 
 export type Response = z.infer<typeof ResponseSchema>
 export const ResponseSchema = z.array(
-	z.object({
-		hostname: z.string(),
-		time: z.string(),
-		request: z.object({
+	z
+		.object({
 			method: z.string(),
 			url: z.string(),
-		}),
-		response: ServiceResponseSchema(),
-	}),
+			responseTime: z.string().optional(),
+		})
+		.merge(ServiceResponseSchema()),
 )
 
 export const PostLogsSchema = z.object({
@@ -49,17 +48,17 @@ export const PostLogsSchema = z.object({
 
 export interface LogDocument {
 	_source: {
-		hostname: string
-		time: string
-		request: {
+		'@timestamp': string
+		message: string
+		severity: string
+		fields: {
+			requestId: string
 			method: string
 			url: string
-		}
-		response: {
-			success: boolean
-			message: string
 			statusCode: number
-			responseObject: unknown
+			userId: number
+			responseTime?: string
+			responseBody: string
 		}
 	}
 }

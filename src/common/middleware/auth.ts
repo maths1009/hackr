@@ -7,7 +7,7 @@ import { ROLE } from '@/types'
 import { ServiceResponse } from '../models/serviceResponse'
 import { handleServiceResponse } from '../utils/httpHandlers'
 
-export const authMiddleware = (requiredRole: ROLE) => (req: Request, res: Response, next: NextFunction) => {
+const auth = (requiredRole: ROLE) => (req: Request, res: Response, next: NextFunction) => {
 	const authHeader = req.headers.authorization
 
 	if (!authHeader) {
@@ -31,3 +31,5 @@ export const authMiddleware = (requiredRole: ROLE) => (req: Request, res: Respon
 
 	next()
 }
+
+export default auth
