@@ -17,4 +17,7 @@ export const env = cleanEnv(process.env, {
 	JWT_SECRET: str({ devDefault: 'secretdev' }),
 	JWT_DURATION: str({ devDefault: '1h' }),
 	ELK_HOST: str({ devDefault: 'http://localhost:9200' }),
+	MAILJET_API_KEY: str({ devDefault: 'mailjetapikey' }),
+	MAILJET_SECRET_KEY: str({ devDefault: 'mailjetsecretkey' }),
+	FROM_EMAIL: str({ devDefault: '' }),
 })

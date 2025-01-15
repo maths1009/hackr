@@ -18,6 +18,7 @@ import { fakeIdentityRouter } from './api/fake-identity/router'
 import { logsRouter } from './api/logs/router'
 import { passwordRouter } from './api/password/router'
 import { randomImageRouter } from './api/random-image/router'
+import { spamEmailRouter } from './api/spam-email/router'
 import { verifEmailRouter } from './api/verif-email/router'
 import { verifPasswordRouter } from './api/verif-password/router'
 import { ROUTE } from './common/helpers/route'
@@ -67,6 +68,7 @@ app.use(ROUTE.RANDOM_IMAGE, randomImageRouter)
 app.use(ROUTE.VERIF_EMAIL, verifEmailRouter)
 app.use(ROUTE.VERIF_PASSWORD, verifPasswordRouter)
 app.use(ROUTE.DDOS, ddosRouter)
+app.use(ROUTE.SPAM_EMAIL, spamEmailRouter)
 
 // Swagger UI
 app.use(openAPIRouter)

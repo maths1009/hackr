@@ -10,6 +10,7 @@ export enum ROUTE {
 	VERIF_EMAIL = '/verif-email',
 	VERIF_PASSWORD = '/verif-password',
 	DDOS = '/ddos',
+	SPAM_EMAIL = '/spam-email',
 }
 
 export enum AUTH_ROUTE {
